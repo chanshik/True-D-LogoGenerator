@@ -5,8 +5,10 @@ import firmwares
 
 import os
 
-UPLOAD_FOLDER = '/tmp/true_d_logo'
-FIRMWARE_FOLDER = '/tmp/true_d_firmware'
+program_dir = os.path.dirname(os.path.realpath(__file__))
+
+UPLOAD_FOLDER = program_dir + '/tmp/true_d_logo'
+FIRMWARE_FOLDER = program_dir + '/tmp/true_d_firmware'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
@@ -169,8 +171,5 @@ def generate_firmware_with_logo(logo_filename):
 
 
 if __name__ == '__main__':
-    os.mkdir("/tmp/true_d_logo")
-    os.mkdir("/tmp/true_d_firmware")
-
     app.secret_key = 'Z1Zr/98j3yX_R~XHH!jmN]LXG/,?RA'
     app.run()
