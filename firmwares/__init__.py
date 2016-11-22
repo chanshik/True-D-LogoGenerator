@@ -1,0 +1,1 @@
+from .true_d_rev_2_0_template import true_d_rev_2_0_firmware
