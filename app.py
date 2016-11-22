@@ -169,5 +169,8 @@ def generate_firmware_with_logo(logo_filename):
 
 
 if __name__ == '__main__':
+    os.mkdir("/tmp/true_d_logo")
+    os.mkdir("/tmp/true_d_firmware")
+
     app.secret_key = 'Z1Zr/98j3yX_R~XHH!jmN]LXG/,?RA'
     app.run()
