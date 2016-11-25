@@ -49,6 +49,10 @@ def preview(filename):
     preview_link = '/preview_img/{filename}'.format(filename=filename + ".png")
     firmware_link = '/firmware/{filename}'.format(filename=filename)
 
+    print("Generated Firmware: %s" % filename)
+    print("  Preview: %s" % preview_link)
+    print("  Firmware: %s" % firmware_link)
+
     preview_full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename + ".png")
     if not os.path.isfile(preview_full_path):
         flash('Invalid image')
@@ -78,6 +82,7 @@ def upload_file():
             return redirect(app.config['INDEX'])
 
         firmware_name = generate_firmware_with_logo(filename)
+        print("Uploaded Image: %s" % filename)
 
         return redirect(url_for('preview', filename=firmware_name))
 
