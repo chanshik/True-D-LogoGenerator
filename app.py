@@ -15,6 +15,8 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 app.config['FIRMWARE_FOLDER'] = FIRMWARE_FOLDER
+app.config['INDEX'] = '/'
+app.secret_key = 'Z1Zr/98j3yX_R~XHH!jmN]LXG/,?RA'
 
 
 def allowed_file(filename):
@@ -34,6 +36,11 @@ def firmware_file(filename):
 
 @app.route('/preview_img/<filename>', methods=["GET"])
 def preview_img(filename):
+    preview_full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if not os.path.isfile(preview_full_path):
+        flash('Invalid preview image')
+        return redirect(app.config['INDEX'])
+
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
@@ -42,6 +49,11 @@ def preview(filename):
     preview_link = '/preview_img/{filename}'.format(filename=filename + ".png")
     firmware_link = '/firmware/{filename}'.format(filename=filename)
 
+    preview_full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename + ".png")
+    if not os.path.isfile(preview_full_path):
+        flash('Invalid image')
+        return redirect(app.config['INDEX'])
+
     return render_template("preview.html", firmware_link=firmware_link, preview_img=preview_link)
 
 
@@ -49,14 +61,12 @@ def preview(filename):
 def upload_file():
     if 'file' not in request.files:
         flash('No file part')
-        return redirect(request.url)
+        return redirect(app.config['INDEX'])
 
     file = request.files['file']
-    # if user does not select file, browser also
-    # submit a empty part without filename
     if file.filename == '':
         flash('No selected file')
-        return redirect(request.url)
+        return redirect(app.config['INDEX'])
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -65,17 +75,23 @@ def upload_file():
 
         if not validate_image(full_path):
             flash('Invalid image size. It must be 128x64')
-            return redirect(url_for('index'))
+            return redirect(app.config['INDEX'])
 
         firmware_name = generate_firmware_with_logo(filename)
 
-        # return redirect(url_for('firmware_file', filename=firmware_name))
         return redirect(url_for('preview', filename=firmware_name))
 
 
 @app.route('/')
 def index():
+    app.config['INDEX'] = '/'
     return render_template("index.html")
+
+
+@app.route('/en')
+def index_en():
+    app.config['INDEX'] = '/en'
+    return render_template("index_en.html")
 
 
 def validate_image(filename):
@@ -171,5 +187,4 @@ def generate_firmware_with_logo(logo_filename):
 
 
 if __name__ == '__main__':
-    app.secret_key = 'Z1Zr/98j3yX_R~XHH!jmN]LXG/,?RA'
     app.run()

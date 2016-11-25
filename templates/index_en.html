@@ -11,12 +11,13 @@
     </a><br>
     Furious True-D REV 2.0 Firmware: <a href="https://furiousfpv.com/download.php">download</a><br>
     <br>
-    Furious True-D LCD는 128x64 크기에 단색만을 지원합니다.<br>
-    현재 지원하는 이미지는 128x64 크기를 가진 RGB (24bits) 입니다.<br>
-    이미지에서 RGB(255,255,255) 색상이 아닌 모든 색은 LCD 에서 단색으로 출력됩니다.<br>
+    Furious True-D LCD supports only 128x64 black and white color.<br>
+    Currently supported images are RGB (24 bits) with 128x64 size.<br>
+    Any color that is not RGB (255,255,255) in the image will be output to the LCD.<br>
     <br>
-    미리보기 이미지를 확인한 후 원본 이미지와 다르다고 생각되는 경우에는 펌웨어를 이용하는데 주의를 요합니다.<br>
-    여기서 생성한 펌웨어로 인해 발생한 모든 문제에 대해서 서비스 제공자는 어떠한 책임도 지지 않습니다<br>
+    If you check the preview image and think that it differs from the original image,
+    be careful when using the firmware.<br>
+    The service provider is not responsible for any problems caused by the firmware created here.<br>
     <br>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -25,12 +26,13 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <h1>이미지 파일 올리기 (PNG를 권장합니다)</h1>
+    <h1>Upload image file (PNG recommend)</h1>
     <form action="/uploads" method=post enctype=multipart/form-data>
       <p><input type=file name=file>
          <input type=submit value=Upload>
     </form>
     <br>
-    서비스 제안 혹은 문제점을 발견하신 경우에는 <a href="mailto:fpv4quad@gmail.com">관리자</a> 에게 메일로 알려주세요.
+    If you find a service suggestion or problem,
+    please let the <a href="mailto:fpv4quad@gmail.com">administrator</a> know by email.
 </body>
 </html>
