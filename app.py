@@ -1,4 +1,6 @@
+import time
 from flask import Flask, render_template, abort, g, url_for, request, flash, redirect, send_from_directory
+from flask import make_response
 from werkzeug.utils import secure_filename
 from PIL import Image
 import firmwares
@@ -46,7 +48,7 @@ def preview_img(filename):
 
 @app.route('/preview/<filename>', methods=["GET"])
 def preview(filename):
-    preview_link = '/preview_img/{filename}'.format(filename=filename + ".png")
+    preview_link = '/preview_img/{filename}'.format(filename=filename + ".png" + "?" + str(time.time()))
     firmware_link = '/firmware/{filename}'.format(filename=filename)
 
     print("Generated Firmware: %s" % filename)
@@ -58,7 +60,13 @@ def preview(filename):
         flash('Invalid image')
         return redirect(app.config['INDEX'])
 
-    return render_template("preview.html", firmware_link=firmware_link, preview_img=preview_link)
+    # return render_template("preview.html", firmware_link=firmware_link, preview_img=preview_link)
+    r = make_response(render_template("preview.html", firmware_link=firmware_link, preview_img=preview_link))
+
+    r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    r.headers['Pragma'] = 'no-cache'
+
+    return r
 
 
 @app.route('/uploads', methods=['POST'])
